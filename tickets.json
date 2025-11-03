@@ -1,0 +1,86 @@
+[
+    {
+        "type": "Account Setup",
+        "candidate_name": "saketh",
+        "email": "srsaketh1901@gmail.com",
+        "role": "Data Analyst",
+        "status": "Pending"
+    },
+    {
+        "type": "Hardware Setup",
+        "candidate_name": "saketh",
+        "email": "srsaketh1901@gmail.com",
+        "role": "Data Analyst",
+        "status": "Pending"
+    },
+    {
+        "type": "Account Setup",
+        "candidate_name": "Bahubali",
+        "email": "steamgames1818@gmail.com",
+        "role": "Software developer",
+        "status": "Pending"
+    },
+    {
+        "type": "Hardware Setup",
+        "candidate_name": "Bahubali",
+        "email": "steamgames1818@gmail.com",
+        "role": "Software developer",
+        "status": "Pending"
+    },
+    {
+        "type": "Account Setup",
+        "candidate_name": "bhavanvitha ",
+        "email": "bhavanvithakandukuri@gmail.com",
+        "role": "Edge Analyst",
+        "status": "Pending"
+    },
+    {
+        "type": "Hardware Setup",
+        "candidate_name": "bhavanvitha ",
+        "email": "bhavanvithakandukuri@gmail.com",
+        "role": "Edge Analyst",
+        "status": "Pending"
+    },
+    {
+        "type": "Account Setup",
+        "candidate_name": "bhavanvitha ",
+        "email": "bhavanvithakandukuri@gmail.com",
+        "role": "Edge Analyst",
+        "status": "Pending"
+    },
+    {
+        "type": "Hardware Setup",
+        "candidate_name": "bhavanvitha ",
+        "email": "bhavanvithakandukuri@gmail.com",
+        "role": "Edge Analyst",
+        "status": "Pending"
+    },
+    {
+        "type": "Account Setup",
+        "candidate_name": "Sathvika",
+        "email": "steamgames1818@gmail.com",
+        "role": "Interior Designer ",
+        "status": "Pending"
+    },
+    {
+        "type": "Hardware Setup",
+        "candidate_name": "Sathvika",
+        "email": "steamgames1818@gmail.com",
+        "role": "Interior Designer ",
+        "status": "Pending"
+    },
+    {
+        "type": "Account Setup",
+        "candidate_name": "Bhavana G",
+        "email": "srsaketh1901@gmail.com",
+        "role": "Devops Engineer",
+        "status": "Pending"
+    },
+    {
+        "type": "Hardware Setup",
+        "candidate_name": "Bhavana G",
+        "email": "srsaketh1901@gmail.com",
+        "role": "Devops Engineer",
+        "status": "Pending"
+    }
+]
