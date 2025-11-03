@@ -23,6 +23,8 @@
 
 # conn.close()
 
+##the below code is to check if the Gemini API key is loaded correctly and list the available models
+
 from dotenv import load_dotenv
 import os
 from google import genai
