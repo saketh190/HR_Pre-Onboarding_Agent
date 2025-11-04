@@ -40,3 +40,4 @@ def get_all_candidates():
     rows = c.fetchall()
     conn.close()
     return rows
+
