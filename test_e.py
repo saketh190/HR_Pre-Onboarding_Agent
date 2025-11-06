@@ -15,8 +15,7 @@ id1 = add_employee(
 id2 = add_employee(
     name="Saketh E",
     email="srsaketh1901@gmail.com",
-    role="Data Scientist",
-    joined='No'
+    role="Data Scientist"
 )
 
 

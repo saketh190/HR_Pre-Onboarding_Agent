@@ -82,5 +82,103 @@
         "email": "srsaketh1901@gmail.com",
         "role": "Devops Engineer",
         "status": "Pending"
+    },
+    {
+        "type": "Account Setup",
+        "candidate_name": "Saketh",
+        "email": "srsaketh1901@gmail.com",
+        "role": "Data Scientist",
+        "status": "Pending"
+    },
+    {
+        "type": "Hardware Setup",
+        "candidate_name": "Saketh",
+        "email": "srsaketh1901@gmail.com",
+        "role": "Data Scientist",
+        "status": "Pending"
+    },
+    {
+        "type": "Account Setup",
+        "candidate_name": "Bhavanvitha",
+        "email": "srsaketh1901@gmail.com",
+        "role": "ML Engineer",
+        "status": "Pending"
+    },
+    {
+        "type": "Hardware Setup",
+        "candidate_name": "Bhavanvitha",
+        "email": "srsaketh1901@gmail.com",
+        "role": "ML Engineer",
+        "status": "Pending"
+    },
+    {
+        "type": "Account Setup",
+        "candidate_name": "Bhavanvitha",
+        "email": "srsaketh1901@gmail.com",
+        "role": "ML Engineer",
+        "status": "Pending"
+    },
+    {
+        "type": "Hardware Setup",
+        "candidate_name": "Bhavanvitha",
+        "email": "srsaketh1901@gmail.com",
+        "role": "ML Engineer",
+        "status": "Pending"
+    },
+    {
+        "type": "Account Setup",
+        "candidate_name": "Saketh E",
+        "email": "srsaketh1901@gmail.com",
+        "role": "Data Scientist",
+        "status": "Pending"
+    },
+    {
+        "type": "Hardware Setup",
+        "candidate_name": "Saketh E",
+        "email": "srsaketh1901@gmail.com",
+        "role": "Data Scientist",
+        "status": "Pending"
+    },
+    {
+        "type": "Account Setup",
+        "candidate_name": "Saketh E",
+        "email": "srsaketh1901@gmail.com",
+        "role": "Data Scientist",
+        "status": "Pending"
+    },
+    {
+        "type": "Hardware Setup",
+        "candidate_name": "Saketh E",
+        "email": "srsaketh1901@gmail.com",
+        "role": "Data Scientist",
+        "status": "Pending"
+    },
+    {
+        "type": "Account Setup",
+        "candidate_name": "Saketh E",
+        "email": "srsaketh1901@gmail.com",
+        "role": "Data Scientist",
+        "status": "Pending"
+    },
+    {
+        "type": "Hardware Setup",
+        "candidate_name": "Saketh E",
+        "email": "srsaketh1901@gmail.com",
+        "role": "Data Scientist",
+        "status": "Pending"
+    },
+    {
+        "type": "Account Setup",
+        "candidate_name": "Saketh E",
+        "email": "srsaketh1901@gmail.com",
+        "role": "Data Scientist",
+        "status": "Pending"
+    },
+    {
+        "type": "Hardware Setup",
+        "candidate_name": "Saketh E",
+        "email": "srsaketh1901@gmail.com",
+        "role": "Data Scientist",
+        "status": "Pending"
     }
 ]

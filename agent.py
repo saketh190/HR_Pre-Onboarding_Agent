@@ -6,7 +6,9 @@ import json
 from dotenv import load_dotenv
 import os
 import time
-
+from e_table import get_all_employees, add_employee
+from check_responses import init_db, add_candidate, get_all_candidates
+import sqlite3
 # ---------- LOAD ENV ----------
 load_dotenv()
 EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
@@ -17,19 +19,42 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 yag = yagmail.SMTP(EMAIL_ADDRESS, EMAIL_PASSWORD)
 
 # ---------- LLM SETUP (Google Gemini using google-genai) ----------
-# Install first: pip install google-genai
-from google import genai
-
-client = genai.Client(api_key=GEMINI_API_KEY)
-
 # ---------- FILES ----------
 TICKET_FILE = "tickets.json"
 FORM_LINK = "https://forms.office.com/r/j3sUEjNxvS"  # Replace with your form
  # Replace with your form
 
 # ---------- FUNCTIONS ----------
+
+
+import google.generativeai as genai
+import os
+
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
+def is_acceptance_email(body):
+    prompt = f"""
+    You are an AI assistant for HR onboarding.
+
+    This is the candidate's reply:
+    "{body}"
+
+    Decide if the candidate is ACCEPTING or REJECTING the job offer.
+    Reply only with:
+    accept
+    reject
+    """
+
+    model = genai.GenerativeModel("gemini-2.5-flash")
+    response = model.generate_content(prompt)
+
+    return "accept" in response.text.strip().lower()
+
+
+
+
 def check_candidate_replies():
-    """Check Gmail for candidate replies with 'Yes'"""
+    """Check Gmail for any candidate reply and decide via AI if it is acceptance."""
     imap_server = 'imap.gmail.com'
     mail = imapclient.IMAPClient(imap_server, ssl=True)
     mail.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
@@ -42,13 +67,16 @@ def check_candidate_replies():
         raw_message = mail.fetch([uid], ['BODY[]', 'FLAGS'])
         message = pyzmail.PyzMessage.factory(raw_message[uid][b'BODY[]'])
         sender = message.get_addresses('from')[0][1]
-        body = ""
+
         if message.text_part:
             body = message.text_part.get_payload().decode(message.text_part.charset)
         elif message.html_part:
             body = message.html_part.get_payload().decode(message.html_part.charset)
+        else:
+            body = ""
 
-        if "yes" in body.lower():
+        # ✅ Use AI to detect if this message is an acceptance
+        if is_acceptance_email(body):
             accepted_emails.append(sender)
 
     mail.logout()
@@ -126,25 +154,17 @@ def create_tickets(candidate_email, candidate_name, role):
 
 def generate_welcome_email(name, role):
     prompt = f"""
-    Write a short and simple welcome email for a new employee.
-    Details:
+    Write a short welcome email for a new employee:
     - Name: {name}
     - Role: {role}
-    - Tone: friendly, professional, simple
-    - No fancy words, no special characters, no long paragraphs.
-    - Mention that HR will share company policies and onboarding details soon.
-    - Maximum 120 words.
+    - Tone: simple, friendly, professional
+    - Under 120 words.
     """
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt,
-    )
+    model = genai.GenerativeModel("gemini-2.5-flash")
+    response = model.generate_content(prompt)
+    return response.text.strip()
 
-    try:
-        return response.text.strip()
-    except:
-        return str(response)
 
 
 
@@ -184,43 +204,67 @@ def send_policy_welcome(name, email, role):
     content = generate_welcome_email(name, role)
     yag.send(email, "Welcome to the Company!", content)
     update_status(email, "policy_welcome_sent")
-    print(f"Policy & Welcome email sent to {name} ({email})")
+
+    # ✅ Update employee table (mark Joined = Yes)
+    conn = sqlite3.connect('employees.db')
+    c = conn.cursor()
+    c.execute("UPDATE employees SET joined='Yes' WHERE email=?", (email,))
+    conn.commit()
+    conn.close()
+
+    print(f"🎉 {name} has completed onboarding.")
+
+def auto_add_new_employees():
+    employees = get_all_employees()
+    for emp in employees:
+        if emp['joined'] == 'No':  # New employee
+            name = emp['name']
+            email = emp['email']
+            role = emp['role']
+
+            # Add to candidates table (same as manual add)
+            add_candidate(name, email, role)
+
+            # Send offer email
+            send_offer_email(name, email, role)
+
+            # Update employee table to avoid repeat
+            conn = sqlite3.connect('employees.db')
+            c = conn.cursor()
+            c.execute("UPDATE employees SET joined = 'In Progress' WHERE email=?", (email,))
+            conn.commit()
+            conn.close()
+
+            print(f"✅ Auto-started onboarding for {name} ({email})")
 
 # ---------- MAIN AGENT LOOP ----------
 def run_agent():
     while True:
-        # 1. Check candidate replies
+        auto_add_new_employees()
+
+        # ✅ AI-based acceptance detection
         accepted_emails = check_candidate_replies()
         for email in accepted_emails:
             update_status(email, "accepted")
-            print(f"Candidate {email} accepted the offer.")
 
         conn = sqlite3.connect('candidates.db')
         c = conn.cursor()
 
-        # 2. Send document links to accepted candidates not yet sent
+        # 2. Send document link
         c.execute("SELECT name, email FROM candidates WHERE accepted='Yes' AND document_link_sent='No'")
-        rows = c.fetchall()
-        for row in rows:
-            name, email = row
+        for name, email in c.fetchall():
             send_document_link(name, email)
 
-        # 3. Generate tickets for verified documents
+        # 3. Create tickets
         c.execute("SELECT name, email, role FROM candidates WHERE documents_verified='Yes' AND tickets_generated='No'")
-        rows = c.fetchall()
-        for row in rows:
-            name, email, role = row
+        for name, email, role in c.fetchall():
             create_tickets(email, name, role)
 
-        # 4. Send policy + welcome email for candidates with tickets generated
+        # 4. Send welcome mail
         c.execute("SELECT name, email, role FROM candidates WHERE tickets_generated='Yes' AND policy_welcome_sent='No'")
-        rows = c.fetchall()
-        for row in rows:
-            name, email, role = row
+        for name, email, role in c.fetchall():
             send_policy_welcome(name, email, role)
 
-        conn.close()
-        # Sleep for 60 seconds
         time.sleep(10)
 
 if __name__ == "__main__":
