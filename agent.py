@@ -1,3 +1,4 @@
+import streamlit as st
 import imapclient
 import pyzmail
 import sqlite3
@@ -16,9 +17,9 @@ with open("agent_log.txt", "w", encoding="utf-8") as log:
 
 # ---------- LOAD ENV ----------
 load_dotenv()
-EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
-EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+EMAIL_ADDRESS = st.secrets("EMAIL_ADDRESS")
+EMAIL_PASSWORD = st.secrets("EMAIL_PASSWORD")
+GEMINI_API_KEY = st.secrets("GEMINI_API_KEY")
 
 # ---------- EMAIL SETUP ----------
 yag = yagmail.SMTP(EMAIL_ADDRESS, EMAIL_PASSWORD)
@@ -35,7 +36,7 @@ FORM_LINK = "https://forms.office.com/r/j3sUEjNxvS"  # Replace with your form
 import google.generativeai as genai
 import os
 
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+genai.configure(api_key=st.secrets("GEMINI_API_KEY"))
 
 def is_acceptance_email(body):
     prompt = f"""
