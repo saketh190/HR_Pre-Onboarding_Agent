@@ -1,8 +1,7 @@
 imapclient
 pyzmail36
-sqlite3 
 yagmail
 python-dotenv
-google-genai
+google-generativeai
 streamlit
-python-dotenv
+python-dotenv   
