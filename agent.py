@@ -9,6 +9,11 @@ import time
 from e_table import get_all_employees, add_employee
 from check_responses import init_db, add_candidate, get_all_candidates
 import sqlite3
+
+with open("agent_log.txt", "w", encoding="utf-8") as log:
+    log.write("✅ agent.py started successfully\n")
+
+
 # ---------- LOAD ENV ----------
 load_dotenv()
 EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
@@ -256,7 +261,7 @@ def run_agent():
             send_document_link(name, email)
 
         # 3. Create tickets
-        c.execute("SELECT name, email, role FROM candidates WHERE documents_verified='Yes' AND tickets_generated='No'")
+        c.execute("SELECT name, email, role FROM candidates WHERE accepted='Yes' AND documents_verified='Yes' AND tickets_generated='No'")
         for name, email, role in c.fetchall():
             create_tickets(email, name, role)
 

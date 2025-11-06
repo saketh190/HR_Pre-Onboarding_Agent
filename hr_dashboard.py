@@ -3,6 +3,25 @@ import yagmail
 from dotenv import load_dotenv
 import os
 from check_responses import init_db, add_candidate, get_all_candidates
+import subprocess
+import signal
+
+# ✅ Function to start agent.py only once
+def start_agent():
+    if "agent_running" not in st.session_state:
+        st.session_state.agent_running = False
+
+    if not st.session_state.agent_running:
+        try:
+            # Run agent.py in background
+            subprocess.Popen(["python", "agent.py"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            st.session_state.agent_running = True
+            st.sidebar.success("✅ Agent is running in background.")
+        except Exception as e:
+            st.sidebar.error(f"⚠ Failed to start agent.py: {e}")
+
+# ✅ Start agent when dashboard opens
+start_agent()
 
 # ---------- LOAD ENV ----------
 load_dotenv()
