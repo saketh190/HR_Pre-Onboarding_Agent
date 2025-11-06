@@ -25,8 +25,8 @@ start_agent()
 
 # ---------- LOAD ENV ----------
 load_dotenv()
-EMAIL_ADDRESS = st.secrets("EMAIL_ADDRESS")
-EMAIL_PASSWORD = st.secrets("EMAIL_PASSWORD")
+EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
+EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
 # ---------- INIT DB ----------
 init_db()
